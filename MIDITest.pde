@@ -22,7 +22,7 @@ public void setup(){
   midiFiles = dir.listFiles(new FilenameFilter(){
     @Override
     public boolean accept(File f,String e){
-      return e.endsWith(".mid");
+      return e.endsWith(".midi");
      }
   });
   setupMidi();
