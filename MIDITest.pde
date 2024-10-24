@@ -87,7 +87,7 @@ public void setup() {
     });
     // change midi file here ==================================================
     setupMidi();
-    midiPlay(midiFiles[2]);
+    midiPlay(midiFiles[1]);
     // ========================================================================
 }
 
