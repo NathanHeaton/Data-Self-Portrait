@@ -1,8 +1,4 @@
-import javax.sound.midi.MidiSystem;
-import javax.sound.midi.Sequence;
-import javax.sound.midi.Sequencer;
-import javax.sound.midi.Soundbank;
-import javax.sound.midi.Synthesizer;
+import javax.sound.midi.*;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.Arrays;
