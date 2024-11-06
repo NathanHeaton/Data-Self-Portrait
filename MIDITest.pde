@@ -29,7 +29,7 @@ class Note {
         this.y = 0;
         this.speed = 2 + (velocity/50);
         this.size = map(velocity, 0, 127, 10, 50);
-        this.col = color(map(pitch, 0, 127, pitch, 255), 200, 255);
+        this.col = color(map(pitch, 0, 88, pitch, 255), map(pitch, 0, 88, pitch, 255), map(pitch, 0, 88, pitch, 255));
         this.noteDuration = 1000;
     }
     
@@ -41,6 +41,10 @@ class Note {
         
     }
     
+    float getNotePosition(){
+      return x;
+    }
+    
     void display() {
         noStroke();
         fill(col, 200);
@@ -50,11 +54,11 @@ class Note {
     void bounceBall(){
       if (y > height)
       {
-        speed = - speed;
+        speed =- speed;
       }
       else if( y <= 0)
       {
-        speed = - speed;
+        speed =- speed;
       }
     }
     
@@ -87,7 +91,7 @@ public void setup() {
     });
     // change midi file here ==================================================
     setupMidi();
-    midiPlay(midiFiles[1]);
+    midiPlay(midiFiles[3]);
     // ========================================================================
 }
 
@@ -144,12 +148,13 @@ public void midiPlay(File f) {
 
 public void draw() {
     background(0);
-    
+    //update();
     // Update and display active notes
     for (int i = activeNotes.size() - 1; i >= 0; i--) {
         Note note = activeNotes.get(i);
         note.update();
         note.display();
+
         
         // Move notes to history when they reach the top
         if (note.getNoteDuration() < 0) {
@@ -163,6 +168,24 @@ public void draw() {
         noteHistory.remove(0);
     }
 }
+/*
+public void update() {
+  
+      for (int i = activeNotes.size() - 1; i >= 0; i--) {
+        Note note = activeNotes.get(i);
+        for (int otherNote = activeNotes.size() - 1; otherNote >= 0; otherNote--)
+        if (note)
+
+        
+        // Move notes to history when they reach the top
+        if (note.getNoteDuration() < 0) {
+            noteHistory.add(note);
+            activeNotes.remove(i);
+        }
+    }
+  
+}
+*/
 
 
  
