@@ -11,6 +11,7 @@ PFont font;
 File[] midiFiles;
 ArrayList<Note> activeNotes; // Store currently playing notes
 ArrayList<Note> noteHistory; // Store past notes for visualization
+int index = 0;
 
 
 class Note {
@@ -180,6 +181,8 @@ public void midiPlay(File f) {
 
 public void draw() {
     background(0);
+    text("Currently Playing:" + midiFiles[index].getName(),100,100);
+    
     //update();
     // Update and display active notes
     for (int i = activeNotes.size() - 1; i >= 0; i--) {
@@ -220,14 +223,28 @@ public void update() {
 */
 
 public void keyPressed() {
-    if (key >= '0' && key <= '9') {
-        int index = key - '0';
-        if (index < midiFiles.length) {
-            println("\nTrying to play file at index: " + index);
-            player.stop(); // Stop current playback
-            midiPlay(midiFiles[index]);
+  // go to next and previous song
+    if (keyCode == LEFT) {// if left arrow is pressed
+        index--;
+        if (index < 0) {
+          index = midiFiles.length -1;
         }
+      println("\nTrying to play file at index: " + index);
+      player.stop(); // Stop current playback
+      midiPlay(midiFiles[index]);
     }
+    else if (keyCode == RIGHT){// if right arrow is pressed
+        index++;
+        if (index > midiFiles.length) {
+          index = 0 ;
+        }
+      println("\nTrying to play file at index: " + index);
+      player.stop(); // Stop current playback
+      midiPlay(midiFiles[index]);
+    }
+    // add detection from num 0 to 9 skiping through the song the amount
+    
+    
 }
 
 
