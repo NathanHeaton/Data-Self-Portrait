@@ -3,6 +3,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Random;
 
 Sequencer player;
 String sbFile;
@@ -11,10 +12,13 @@ File[] midiFiles;
 ArrayList<Note> activeNotes; // Store currently playing notes
 ArrayList<Note> noteHistory; // Store past notes for visualization
 
+
 class Note {
+    Random random = new Random();
     int pitch;
     int velocity;
-    float speed;
+    float speedX;
+    float speedY;
     float x;
     float y;
     float size;
@@ -27,14 +31,16 @@ class Note {
         this.velocity = velocity;
         this.x = map(pitch, 0, 127, 0, width);
         this.y = 0;
-        this.speed = 2 + (velocity/50);
-        this.size = map(velocity, 0, 127, 10, 50);
+        this.speedY = 2 + (velocity/50);
+        this.speedX = 0;
+        this.size = map(velocity, 0, 127, 10, 50)*1.5;
         this.col = color(map(pitch, 0, 88, pitch, 255), map(pitch, 0, 88, pitch, 255), map(pitch, 0, 88, pitch, 255));
-        this.noteDuration = 1000;
+        this.noteDuration = 1800;
     }
     
     void update() {
-        y += speed; // Move note up the screen
+        y += speedY; // Move note up the screen
+        x += speedX;
         bounceBall();
         noteDuration--;
 
@@ -54,11 +60,34 @@ class Note {
     void bounceBall(){
       if (y > height)
       {
-        speed =- speed;
+        speedY =- speedY;
+        boolean randomBoolean = random.nextBoolean();
+        if(randomBoolean){
+          speedX = speedY;
+          col = color(map(pitch, 0, 88, pitch, 255), pitch, map(pitch, 0, 88, pitch, 255));
+        }
+          
+        else
+        { 
+          speedX =- speedY;
+          col = color(pitch, map(pitch, 0, 88, pitch, 255), map(pitch, 0, 88, pitch, 255));
+        }
+
       }
       else if( y <= 0)
       {
-        speed =- speed;
+        speedY =- speedY;
+        col = color(map(pitch, 0, 88, pitch, 255), map(pitch, 0, 88, pitch, 255), pitch);
+      }
+      if( x <= 0)
+      {
+        speedX =- speedX;
+        col = color(pitch, map(pitch, 0, 88, pitch, 255), map(pitch, 0, 88, pitch, 255));
+      }
+      else if ( x > width)
+      {
+        speedX =- speedX;
+        col = color(pitch, map(pitch, 0, 88, pitch, 255), pitch);
       }
     }
     
@@ -71,9 +100,8 @@ class Note {
       
     }
 }
-
 public void setup() {
-    size(1000, 600);
+    size(1920, 1080);
     surface.setLocation(100, 100);
     font = createFont("pixel-art-font.ttf", 24);
     textFont(font, 24);
@@ -91,7 +119,7 @@ public void setup() {
     });
     // change midi file here ==================================================
     setupMidi();
-    midiPlay(midiFiles[3]);
+    midiPlay(midiFiles[0]);
     // ========================================================================
 }
 
@@ -152,10 +180,7 @@ public void midiPlay(File f) {
 
 public void draw() {
     background(0);
-<<<<<<< HEAD
-=======
     //update();
->>>>>>> e0b658f9e6306e1b0d753c33c8a818003df80bfb
     // Update and display active notes
     for (int i = activeNotes.size() - 1; i >= 0; i--) {
         Note note = activeNotes.get(i);
