@@ -98,7 +98,6 @@ private void setupMidi() {
         Synthesizer synth = MidiSystem.getSynthesizer();
         synth.loadAllInstruments(soundbank);
         synth.open();
-        
         player = MidiSystem.getSequencer();
         player.open();
         
@@ -134,9 +133,14 @@ private void setupMidi() {
 
 public void midiPlay(File f) {
     try {
+        print("trying to play" + f.getName());
         Sequence music = MidiSystem.getSequence(f);
         player.setSequence(music);
         player.start();
+                println("Sequence loaded:");
+        println("- Duration (microseconds): " + music.getMicrosecondLength());
+        println("- Tick length: " + music.getTickLength());
+        println("- Track count: " + music.getTracks().length);
     } catch (Exception e) {
         print(e.getMessage());
     }
@@ -144,7 +148,6 @@ public void midiPlay(File f) {
 
 public void draw() {
     background(0);
-    
     // Update and display active notes
     for (int i = activeNotes.size() - 1; i >= 0; i--) {
         Note note = activeNotes.get(i);
@@ -161,6 +164,17 @@ public void draw() {
     // Clean up note history to prevent memory issues
     if (noteHistory.size() > 1000) {
         noteHistory.remove(0);
+    }
+}
+
+public void keyPressed() {
+    if (key >= '0' && key <= '9') {
+        int index = key - '0';
+        if (index < midiFiles.length) {
+            println("\nTrying to play file at index: " + index);
+            player.stop(); // Stop current playback
+            midiPlay(midiFiles[index]);
+        }
     }
 }
 
