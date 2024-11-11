@@ -102,7 +102,7 @@ class Note {
     }
 }
 public void setup() {
-    size(1920, 1080);
+    size(841*2,594*2);
     surface.setLocation(100, 100);
     font = createFont("pixel-art-font.ttf", 24);
     textFont(font, 24);
@@ -181,6 +181,7 @@ public void midiPlay(File f) {
 
 public void draw() {
     background(0);
+    //rect(0,0,width,height,color(255,255,255));
     text("Currently Playing:" + midiFiles[index].getName(),100,100);
     
     //update();
@@ -235,7 +236,7 @@ public void keyPressed() {
     }
     else if (keyCode == RIGHT){// if right arrow is pressed
         index++;
-        if (index > midiFiles.length) {
+        if (index > midiFiles.length -1) {
           index = 0 ;
         }
       println("\nTrying to play file at index: " + index);
